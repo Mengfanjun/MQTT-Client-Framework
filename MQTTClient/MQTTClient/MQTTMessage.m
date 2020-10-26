@@ -595,12 +595,13 @@
                         type == MQTTPubrec ||
                         type == MQTTPubrel ||
                         type == MQTTPubcomp) {
-                        if (protocolLevel != MQTTProtocolVersion50) {
+                        //新增注释
+                        /*if (protocolLevel != MQTTProtocolVersion50) {
                             if (message.data.length > 2) {
                                 DDLogWarn(@"[MQTTMessage] unexpected payload after packet identifier");
-                                message = nil;
+//                                message = nil;
                             }
-                        } else {
+                        } else */{
                             if (message.data.length < 3) {
                                 DDLogWarn(@"[MQTTMessage] no returncode");
                                 message = nil;
@@ -664,8 +665,9 @@
                             }
                         } else {
                             if (message.data.length != 2) {
-                                DDLogWarn(@"[MQTTMessage] missing connack variable header");
-                                message = nil;
+                                //新增注释
+//                                DDLogWarn(@"[MQTTMessage] missing connack variable header");
+//                                message = nil;
                             }
                         }
                         if (message) {
