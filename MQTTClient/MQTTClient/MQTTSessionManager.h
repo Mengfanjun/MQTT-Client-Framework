@@ -43,6 +43,14 @@ typedef NS_ENUM(int, MQTTSessionManagerState) {
 - (void)handleMessage:(NSData *)data onTopic:(NSString *)topic retained:(BOOL)retained;
 
 /** gets called when a new message was received
+
+ @param data the data received, might be zero length
+ @param topic the topic the data was published to
+ @param retained indicates if the data retransmitted from server storage
+ */
+- (void)handleMessage:(NSData *)data onTopic:(NSString *)topic retained:(BOOL)retained mid:(UInt16)mid;
+
+/** gets called when a new message was received
  @param sessionManager the instance of MQTTSessionManager whose state changed
  @param data the data received, might be zero length
  @param topic the topic the data was published to
@@ -52,6 +60,18 @@ typedef NS_ENUM(int, MQTTSessionManagerState) {
      didReceiveMessage:(NSData *)data
                onTopic:(NSString *)topic
               retained:(BOOL)retained;
+
+/** gets called when a new message was received
+ @param sessionManager the instance of MQTTSessionManager whose state changed
+ @param data the data received, might be zero length
+ @param topic the topic the data was published to
+ @param retained indicates if the data retransmitted from server storage
+ */
+- (void)sessionManager:(MQTTSessionManager *)sessionManager
+     didReceiveMessage:(NSData *)data
+               onTopic:(NSString *)topic
+              retained:(BOOL)retained
+                   mid:(UInt16)mid;
 
 /** gets called when a published message was actually delivered
  @param msgID the Message Identifier of the delivered message

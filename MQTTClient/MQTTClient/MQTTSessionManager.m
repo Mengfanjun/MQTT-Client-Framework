@@ -293,6 +293,12 @@
         if ([self.delegate respondsToSelector:@selector(handleMessage:onTopic:retained:)]) {
             [self.delegate handleMessage:data onTopic:topic retained:retained];
         }
+        if ([self.delegate respondsToSelector:@selector(handleMessage:onTopic:retained:mid:)]) {
+            [self.delegate handleMessage:data onTopic:topic retained:retained mid:mid];
+        }
+        if ([self.delegate respondsToSelector:@selector(sessionManager:didReceiveMessage:onTopic:retained:mid:)]) {
+            [self.delegate sessionManager:self didReceiveMessage:data onTopic:topic retained:retained mid:mid];
+        }
     }
 }
 
