@@ -1079,6 +1079,7 @@ NSString * const MQTTSessionErrorDomain = @"MQTT";
     id<MQTTFlow> flow = [self.persistence flowforClientId:self.clientId
                                              incomingFlag:NO
                                                 messageId:msg.mid];
+    NSString *tempTopic = [flow topic];
     if (flow) {
         if ((flow.commandType).intValue == MQTTPublish && (flow.qosLevel).intValue == MQTTQosLevelAtLeastOnce) {
             if ([self.delegate respondsToSelector:@selector(messageDelivered:msgID:)]) {
@@ -1110,10 +1111,10 @@ NSString * const MQTTSessionErrorDomain = @"MQTT";
     }
     
     //新增方法
-    [self handleNewPuback:msg];
+    [self handleNewPuback:msg topic:tempTopic];
 }
 
-- (void)handleNewPuback:(MQTTMessage*)msg {
+- (void)handleNewPuback:(MQTTMessage*)msg topic:(NSString *)topic{
     NSData *data = msg.data;
     if (data.length < 3) {
         return;
@@ -1122,7 +1123,7 @@ NSString * const MQTTSessionErrorDomain = @"MQTT";
     NSRange range = NSMakeRange(3, data.length - 3);
     data = [data subdataWithRange:range];
     
-    NSString *topic = @"RWIMTopic";
+//    NSString *topic = @"RWIMTopic";
     
     BOOL processed = true;
     if ([self.delegate respondsToSelector:@selector(newMessage:data:onTopic:qos:retained:mid:)]) {
