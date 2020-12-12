@@ -15,9 +15,12 @@
 }
 - (instancetype)initFromData:(NSData *)data {
     self = [super init];
-
+    if (!data.length) {
+        return self;
+    }
     int propertyLength = [MQTTProperties getVariableLength:data];
     int offset = [MQTTProperties variableIntLength:propertyLength];
+    
     NSData *remainingData = [data subdataWithRange:NSMakeRange(offset, data.length - offset)];
     offset = 0;
     if (remainingData.length >= propertyLength) {
@@ -262,7 +265,9 @@
     int offset = 0;
     int multiplier = 1;
     UInt8 digit;
-
+    if (!data.length) {
+        return -1;
+    }
     do {
         if (data.length < offset) {
             return -1;
