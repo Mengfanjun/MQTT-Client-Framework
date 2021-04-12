@@ -609,9 +609,12 @@
                                 const UInt8 *bytes = message.data.bytes;
                                 message.returnCode = [NSNumber numberWithInt:bytes[2]];
                                 if (message.data.length >= 3) {
-                                    // 2021.04.12 去掉此行  initFromData 不然引起死循环
-//                                    message.properties = [[MQTTProperties alloc] initFromData:
-//                                                          [message.data subdataWithRange:NSMakeRange(3, message.data.length - 3)]];
+                                    // 2021.04.12 判断是否为MQTTProtocolVersion50 否则  initFromData 引起死循环
+                                    // message.properties = [[MQTTProperties alloc] initFromData:
+                                    //[message.data subdataWithRange:NSMakeRange(3, message.data.length - 3)]];
+                                    if (protocolLevel == MQTTProtocolVersion50) {
+                                        message.properties = [[MQTTProperties alloc] initFromData:[message.data subdataWithRange:NSMakeRange(3, message.data.length - 3)]];
+                                    }
                                 }
                             }
 
